@@ -16,7 +16,9 @@ public class BaseCharacterController : FSM<BaseCharacterController>
     int m_maxHP = 100;
     int m_hp;
 
-    Vector3 m_moveSpeed;
+    [SerializeField] float m_moveSpeed = 5f;
+    [SerializeField] float m_turnSmoothTime = 0.1f;
+    float m_turnSmoothVelocity;
     //----------------------------------------
     #endregion
 
@@ -56,14 +58,20 @@ public class BaseCharacterController : FSM<BaseCharacterController>
     }
 
     // moves character. yRotation is for moving character toward intended direction in accordance with camera.
-    protected void Move(Vector3 move, float yRotation = 0)
+    protected void Move(Vector3 dir, float yRotation = 0f)
     {
         if (m_charCtrl == null) return;
-        Vector3 _motion = Quaternion.Euler(0, yRotation, 0) * move;
-        m_animator.SetBool(m_isWalkingHash, true);
-        m_charCtrl.Move(_motion);
-        
-        transform.LookAt(transform.position + _motion.normalized);
+        if (dir.sqrMagnitude != 0f)
+        {
+            // smoothly face character toward moving direction.
+            float _targetAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg + yRotation;
+            float _rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetAngle, ref m_turnSmoothVelocity, m_turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, _rotation, 0f);
+
+            // moving
+            Vector3 moveDir = Quaternion.Euler(0f, _targetAngle, 0f) * Vector3.forward;
+            m_charCtrl.Move(m_moveSpeed * Time.deltaTime * moveDir.normalized);
+        }
     }
     #endregion
 

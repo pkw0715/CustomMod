@@ -1,32 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerController : BaseCharacterController
 {
     //----------------------------------------
     [SerializeField] Joystick m_joystick;
-    Camera m_mainCam;
+    Camera m_refCam;
 
     //----------------------------------------
     [SerializeField]float m_cameraDir;
-    [SerializeField] float m_moveSpeed = 5;
     bool m_cameraMoved = false;
 
     //----------------------------------------
     protected override void Start()
     {
         base.Start();
-        m_mainCam = Camera.main;
+        m_refCam = Camera.main;
     }
 
     protected override void Update()
     {
         base.Update();
         // The direction camera is looking at
-        m_cameraDir = m_mainCam.transform.rotation.eulerAngles.y;
+        m_cameraDir = m_refCam.transform.rotation.eulerAngles.y;
 
-        // Moving Part
+        // Moving part with joystick
+        if (m_joystick.Horizontal != 0 || m_joystick.Vertical != 0)
+        {
+            Move(new Vector3(m_joystick.Horizontal, 0f, m_joystick.Vertical), m_refCam.transform.eulerAngles.y);
+        }
+        else
+        {
+            m_animator.SetFloat("Velocity", 0);
+        }
+
+        /*
+        // faster when LeftShift is pressed.
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            m_moveSpeed = 7;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            m_moveSpeed = 5;
+        }
+
+        // Moving Part with wasd
         float _x = Input.GetAxis("Horizontal") * Time.deltaTime * m_moveSpeed;
         float _z = Input.GetAxis("Vertical") * Time.deltaTime * m_moveSpeed;
         if (_x != 0 || _z != 0)
@@ -37,6 +58,7 @@ public class PlayerController : BaseCharacterController
         {
             m_animator.SetBool("IsWalking", false);
         }
+        */
 
         // temp
         // Camera moving
@@ -45,14 +67,14 @@ public class PlayerController : BaseCharacterController
             if (m_cameraMoved)
             {
                 m_cameraMoved = false;
-                m_mainCam.transform.localPosition = new Vector3(0, 1, -10);
-                m_mainCam.transform.rotation = Quaternion.identity;
+                m_refCam.transform.localPosition = new Vector3(0, 1, -10);
+                m_refCam.transform.rotation = Quaternion.identity;
             }
             else
             {
                 m_cameraMoved = true;
-                m_mainCam.transform.localPosition = new Vector3(-10, 1, 0);
-                m_mainCam.transform.rotation = Quaternion.Euler(0, 90, 0);
+                m_refCam.transform.localPosition = new Vector3(-10, 1, 0);
+                m_refCam.transform.rotation = Quaternion.Euler(0, 90, 0);
             }
         }
     }
