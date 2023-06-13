@@ -33,10 +33,13 @@ public class VariableJoystick : Joystick
 
     public override void OnPointerDown(PointerEventData eventData)
     {
+        Debug.Log("Called Successfully!");
+        Debug.Log($"Joystick type of it is {joystickType}.");
         if(joystickType != JoystickType.Fixed)
         {
             background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
             background.gameObject.SetActive(true);
+            Debug.Log("gameObject of it is active");
         }
         base.OnPointerDown(eventData);
     }

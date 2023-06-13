@@ -6,17 +6,18 @@ using UnityEngine;
 public class PlayerController : BaseCharacterController
 {
     //----------------------------------------
-    [SerializeField] Joystick m_joystick;
-    Camera m_refCam;
+    private Joystick m_joystick;
+    private Camera m_refCam;
 
     //----------------------------------------
     [SerializeField]float m_cameraDir;
-    bool m_cameraMoved = false;
+    private bool m_cameraMoved = false;
 
     //----------------------------------------
     protected override void Start()
     {
         base.Start();
+        m_joystick = UIManager.Instance.Joystick;
         m_refCam = Camera.main;
     }
 

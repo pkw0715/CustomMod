@@ -41,11 +41,11 @@ public class LoadManager : SingletonMono<LoadManager>
         m_currentScene = SceneState.Title;
     }
     
-    public void LoadSceneAsync(SceneState scene)
+    public void LoadSceneAsync(SceneState _scene)
     {
         m_currentlyLoadingScene = true;
-        m_loadingScene = scene;
-        m_asynOperation = SceneManager.LoadSceneAsync((int)scene);
+        m_loadingScene = _scene;
+        m_asynOperation = SceneManager.LoadSceneAsync((int)_scene);
     }
 
     // Can be replaced with Coroutine later on.
@@ -60,6 +60,22 @@ public class LoadManager : SingletonMono<LoadManager>
                 m_loadingScene = SceneState.None;
 
                 m_currentlyLoadingScene = false;
+
+                UIManager.PanelState _newPanel = UIManager.PanelState.None;
+                switch (m_currentScene)
+                {
+                    case SceneState.Title:
+                        _newPanel = UIManager.PanelState.Title;
+                        break;
+                    case SceneState.Lobby:
+                        _newPanel = UIManager.PanelState.Lobby;
+                        break;
+                    case SceneState.Game:
+                        _newPanel = UIManager.PanelState.Game;
+                        break;
+                    default: break;
+                }
+                UIManager.Instance.SwitchPanel(_newPanel);
             }
         }
     }
