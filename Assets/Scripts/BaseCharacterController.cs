@@ -5,24 +5,28 @@ using System;
 
 public class BaseCharacterController : FSM<BaseCharacterController>
 {
-    #region Constants and Properties
-    //----------------------------------------
-    int m_isWalkingHash;
-
+    #region Constants and Fields
+    [SerializeField] private GameObject m_modelPrefab;
     //----------------------------------------
     protected Animator m_animator;
-    CharacterController m_charCtrl;
+    private CharacterController m_charCtrl;
     //----------------------------------------
-    int m_maxHP = 100;
-    int m_hp;
+    private int m_maxHP = 100;
+    private int m_hp;
 
-    [SerializeField] float m_moveSpeed = 5f;
-    [SerializeField] float m_turnSmoothTime = 0.1f;
-    float m_turnSmoothVelocity;
+    [SerializeField] private float m_moveSpeed = 5f;
+    [SerializeField] private float m_turnSmoothTime = 0.1f;
+    private float m_turnSmoothVelocity;
     //----------------------------------------
     #endregion
 
     #region Public Properties
+    public GameObject ModelPrefab
+    {
+        get { return m_modelPrefab; }
+        set { m_modelPrefab = value;}
+    }
+
     public int HP { get { return m_hp; } }
     #endregion
 
@@ -39,8 +43,6 @@ public class BaseCharacterController : FSM<BaseCharacterController>
 
     protected virtual void Start()
     {
-        //Initialize Hash-------------------------
-        m_isWalkingHash = Animator.StringToHash("IsWalking");
         //Initialize Fields-----------------------
         m_animator = GetComponent<Animator>();
         m_charCtrl = GetComponent<CharacterController>();
@@ -50,6 +52,7 @@ public class BaseCharacterController : FSM<BaseCharacterController>
             Debug.Log($"There is no Animator in {name}");
         if (m_charCtrl == null)
             Debug.Log($"There is no CharacterController in {name}");
+        //
     }
 
     protected virtual void Update()

@@ -36,8 +36,16 @@ public class UIManager : SingletonMono<UIManager>
 #region Methods
     public void OnClickPlay()
     {
-        // LoadManager.Instance.LoadSceneAsync(LoadManager.SceneState.Lobby);
-        LoadManager.Instance.LoadSceneAsync(LoadManager.SceneState.Game);
+        switch (LoadManager.Instance.CurrentScene)
+        {
+            case LoadManager.SceneState.Title:
+                LoadManager.Instance.LoadSceneAsync(LoadManager.SceneState.Lobby);
+                break;
+            case LoadManager.SceneState.Lobby:
+                LoadManager.Instance.LoadSceneAsync(LoadManager.SceneState.Game);
+                break;
+            default: break;
+        }
     }
 
     public void OnClickExit()
