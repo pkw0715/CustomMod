@@ -61,7 +61,9 @@ public class BaseCharacterController : FSM<BaseCharacterController>
     protected void Move(Vector3 dir, float yRotation = 0f)
     {
         if (m_charCtrl == null) return;
-        if (dir.sqrMagnitude != 0f)
+
+        float _sqrMag = dir.sqrMagnitude;
+        if (_sqrMag != 0f)
         {
             // smoothly face character toward moving direction.
             float _targetAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg + yRotation;
@@ -71,6 +73,9 @@ public class BaseCharacterController : FSM<BaseCharacterController>
             // moving
             Vector3 moveDir = Quaternion.Euler(0f, _targetAngle, 0f) * Vector3.forward;
             m_charCtrl.Move(m_moveSpeed * Time.deltaTime * moveDir.normalized);
+
+            // animation
+            m_animator.SetFloat("Velocity", _sqrMag);
         }
     }
     #endregion

@@ -65,14 +65,14 @@ public abstract class SingletonMono<T> : MonoBehaviour where T : SingletonMono<T
 
         if (!m_inst.m_isInit)
             m_inst.Init();
-
     }
 
     protected virtual void Awake()
     {
         if (m_inst == null)
         {
-            m_inst = this as T;
+            CreateInst();
+            // m_inst = this as T;
         }
     }
 

@@ -19,6 +19,8 @@ public class PlayerController : BaseCharacterController
         base.Start();
         m_joystick = UIManager.Instance.Joystick;
         m_refCam = Camera.main;
+
+        Debug.Log($"Camera is null : {m_refCam == null}");
     }
 
     protected override void Update()
