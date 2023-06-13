@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using UnityEngine;
 
+/*
 public class Singleton<T> where T : class, new()
 {
     public static T Instance
@@ -11,7 +12,7 @@ public class Singleton<T> where T : class, new()
         private set;
     }
 
-    static Singleton()
+    private static Singleton()
     {
         if (Instance == null)
             Instance = new T();
@@ -22,13 +23,14 @@ public class Singleton<T> where T : class, new()
         Instance = null;
     }
 }
+*/
 
 public abstract class SingletonMono<T> : MonoBehaviour where T : SingletonMono<T>
 {
-    static Object m_lock = new Object();
+    private static Object m_lock = new Object();
 
-    static T m_inst = null;
-    bool m_isInit = false;
+    private static T m_inst = null;
+    private bool m_isInit = false;
 
     public static T Instance
     {
@@ -45,7 +47,7 @@ public abstract class SingletonMono<T> : MonoBehaviour where T : SingletonMono<T
         }
     }
 
-    static void CreateInst()
+    private static void CreateInst()
     {
         m_inst = FindObjectOfType(typeof(T)) as T;
 
@@ -66,13 +68,15 @@ public abstract class SingletonMono<T> : MonoBehaviour where T : SingletonMono<T
 
     }
 
-    void Awake()
+    protected virtual void Awake()
     {
         if (m_inst == null)
         {
             m_inst = this as T;
         }
     }
+
+    protected virtual void Start() { }
 
     protected virtual void Init() { m_isInit = true; }
 
