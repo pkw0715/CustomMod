@@ -58,7 +58,7 @@ public class BaseCharacterController : FSM<BaseCharacterController>
     }
 
     // moves character. yRotation is for moving character toward intended direction in accordance with camera.
-    protected void Move(Vector3 dir, float yRotation = 0f)
+    protected void Move(Vector3 dir, float yRotation = 0f, bool normalizedSpeed = false)
     {
         if (m_charCtrl == null) return;
 
@@ -72,18 +72,11 @@ public class BaseCharacterController : FSM<BaseCharacterController>
 
             // moving
             Vector3 moveDir = Quaternion.Euler(0f, _targetAngle, 0f) * Vector3.forward;
-            m_charCtrl.Move(m_moveSpeed * Time.deltaTime * moveDir.normalized);
+            m_charCtrl.Move(m_moveSpeed * (normalizedSpeed ? 1 : _sqrMag) * Time.deltaTime * moveDir.normalized);
 
             // animation
             m_animator.SetFloat("Velocity", _sqrMag);
         }
-    }
-    #endregion
-
-    #region Operator Overridings
-    public static BaseCharacterController operator *(BaseCharacterController a, BaseCharacterController b)
-    {
-        throw new NotImplementedException();
     }
     #endregion
 }
