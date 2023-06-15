@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class Settings : SingletonMono<Settings>
 {
-    // this list is for saving once instantiated prefabs to use it later.
-    private Dictionary<Model, GameObject> m_instantiatedModelPrefabTable;
-
+    // saving once instantiated prefabs to use it later.
     protected override void Start()
     {
         base.Start();
-        m_instantiatedModelPrefabTable = new Dictionary<Model, GameObject>();
-
     }
 
+    /*
     private GameObject Instantiate(Model _model)
     {
         if (_model == Model.None || _model >= Model.MAX)
@@ -38,10 +35,13 @@ public class Settings : SingletonMono<Settings>
         m_instantiatedModelPrefabTable.Add(_model, _modelObj);
         return _modelObj;
     }
+    */
+}
 
-    public enum Model
+public static class ExtensionExample
+{
+    public static void Destroy(this GameObject[] array)
     {
-        None = -1,
-        MAX
+
     }
 }

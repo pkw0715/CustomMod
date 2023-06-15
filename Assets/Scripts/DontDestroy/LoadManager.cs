@@ -17,7 +17,6 @@ public class LoadManager : SingletonMono<LoadManager>
     private AsyncOperation m_asynOperation;
     
     //--------------------------------------------------
-
 #region Public Properties
     public SceneState PreviousScene
     {

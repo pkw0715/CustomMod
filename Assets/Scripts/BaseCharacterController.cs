@@ -52,7 +52,6 @@ public class BaseCharacterController : FSM<BaseCharacterController>
             Debug.Log($"There is no Animator in {name}");
         if (m_charCtrl == null)
             Debug.Log($"There is no CharacterController in {name}");
-        //
     }
 
     protected virtual void Update()
