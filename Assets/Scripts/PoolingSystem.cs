@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PoolingSystem : MonoBehaviour
@@ -29,27 +30,6 @@ public class PoolingSystem : MonoBehaviour
     #endregion
 
     #region Public Methods
-
-    public void MakePool()
-    {
-        PooledUnitsList = new List<GameObject>[PoolingUnits.Length];
-
-        for (int i = 0; i < PoolingUnits.Length; i++)
-        {
-            PooledUnitsList[i] = new List<GameObject>();
-
-            if (PoolingUnits[i].Amount > 0)
-                PoolingUnits[i].CurAmount = PoolingUnits[i].Amount;
-            else
-                PoolingUnits[i].CurAmount = DefPoolAmount;
-
-            for (int j = 0; j < PoolingUnits[i].CurAmount; j++)
-            {
-                GameObject newItem = Instantiate(PoolingUnits[i].PrefObj);
-                AddToPooledUnitsList(i, newItem, $"_{j}");
-            }
-        }
-    }
 
     public GameObject InstantiateAPS(int idx, GameObject parent = null)
     {
@@ -197,7 +177,6 @@ public class PoolingSystem : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        /*
         PooledUnitsList = new List<GameObject>[PoolingUnits.Length];
 
         for (int i = 0; i < PoolingUnits.Length; i++)
@@ -215,7 +194,6 @@ public class PoolingSystem : MonoBehaviour
                 AddToPooledUnitsList(i, newItem, $"_{j}");
             }
         }
-        */
     }
 
     GameObject GetPooledItem(string pooledObjName)
