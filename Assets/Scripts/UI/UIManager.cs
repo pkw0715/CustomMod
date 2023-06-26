@@ -15,6 +15,7 @@ public class UIManager : SingletonMono<UIManager>
     private PanelState m_currentPanel;
     //----------------------------------------
     [SerializeField] private Joystick m_joystick;
+    [SerializeField] private CharacterSelection m_characterSelection;
 
 #region Properties
     public PanelState PreviousPanel
@@ -55,6 +56,11 @@ public class UIManager : SingletonMono<UIManager>
 #else
         Application.Quit();
 #endif
+    }
+
+    public void OnClickArrow(bool _left)
+    {
+        m_characterSelection.NextCharacter(_left);
     }
 
     public void OpenPanel(PanelState _panel)
